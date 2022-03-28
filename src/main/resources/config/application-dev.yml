@@ -1,0 +1,115 @@
+server:
+  port: 8000
+
+spring:
+  #druid数据源
+  datasource:
+    druid:
+      db-type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      url: jdbc:log4jdbc:mysql://z2devil.cn:3306/blogSql?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
+      username: root
+      password: 123456
+      # 初始连接数
+      initial-size: 5
+      # 最小连接数
+      min-idle: 10
+      # 最大连接数
+      max-active: 20
+      # 获取连接超时时间
+      max-wait: 5000
+      # 连接有效性检测时间
+      time-between-eviction-runs-millis: 60000
+      # 连接在池中最小生存的时间
+      min-evictable-idle-time-millis: 300000
+      # 连接在池中最大生存的时间
+      max-evictable-idle-time-millis: 900000
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      # 检测连接是否有效
+      validation-query: select 1
+      # 配置监控统计
+      webStatFilter:
+        enabled: true
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        reset-enable: false
+      filter:
+        stat:
+          enabled: true
+          # 记录慢SQL
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: false
+        wall:
+          config:
+            multi-statement-allow: true
+  redis:
+    #数据库索引
+    database: 0
+    host: z2devil.cn
+    port: 6379
+    password: YFF100N321m
+    #连接超时时间（ms）
+    timeout: 5000
+    jedis:
+      pool:
+        # 连接池最大连接数（使用负值表示没有限制）
+        max-active: -1
+        # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1
+  servlet:
+    multipart:
+      # 开启 multipart 上传功能
+      enabled: true
+      # 文件写入磁盘的阈值
+      file-size-threshold: 2KB
+      # 最大文件大小
+      max-file-size: 200MB
+      # 最大请求大小
+      max-request-size: 215MB
+  #邮箱
+  mail:
+    # 邮箱stmp
+    host: smtp.qq.com
+    # 你的qq邮箱
+    username: 631471750@qq.com
+    # 注意这里不是邮箱密码，而是SMTP授权密码
+    password: idsnjxnnygqbbcae
+
+#认证签权
+auth:
+  # 请求头名称
+  header: Authorization
+  # 秘钥
+  secret: JKKLJOoasdlfj
+  # 验证码前缀 在redis中存储数据的key前缀，例：code-631471750@qq.com
+  code-prefix: code-
+  # token前缀 在redis中存储数据的key前缀，例：token-1
+  token-prefix: token-
+  # 验证码发送冷却时间 此处单位/秒 ，可在此网站生成 https://www.convertworld.com/zh-hans/time/milliseconds.html
+  code-cooling-time: 60
+  # 验证码过期时间
+  code-expire-time: 900
+  # 验证码过期时间
+  token-expire-time: 2592000
+  # token 续期检查时间范围 在token即将过期的一段时间内用户操作了，则给用户的token续期
+  token-detect-scope: 172800
+
+#对象存储
+oss:
+  endpoint: oss-cn-beijing.aliyuncs.com
+  access-key-id: LTAI5tSfHizt7iAEjigoefXg
+  access-key-secret: juUuKvxggQizaoQV6aZUENneObuwuu
+  bucket-name: z2devil-bucket
+  root-path: blog/
+
+#是否开启 swagger-ui
+swagger:
+  enabled: true
+  host: 127.0.0.1:8000
+  description: 中二Devil的个人博客接口文档
+  title: BLOG 接口文档
+  version: @project.version@
