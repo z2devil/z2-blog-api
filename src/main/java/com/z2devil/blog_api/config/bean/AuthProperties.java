@@ -27,6 +27,10 @@ public class AuthProperties {
 
     private Integer codeExpireTime;
 
+    private Integer codeLength;
+
+    private Integer codeLifeNumber;
+
     private Integer tokenExpireTime;
 
     private Integer tokenDetectScope;

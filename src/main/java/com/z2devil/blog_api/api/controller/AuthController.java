@@ -63,8 +63,8 @@ public class AuthController {
             return Result.res(ResponseEnum.INTERNAL_SERVER_ERROR,
                     "该邮箱已发送过验证码，请"+(authProperties.getCodeCoolingTime() - deltaTime)+"秒后再试");
         }
-        String code = CaptchaUtils.randomStr(4);
-        redisUtils.set(sentCodeKey, code, authProperties.getCodeExpireTime());
+        String code = CaptchaUtils.randomStr(authProperties.getCodeLength());
+        redisUtils.set(sentCodeKey, code+"-"+authProperties.getCodeLifeNumber(), authProperties.getCodeExpireTime());
         mailUtils.sendSimpleMail(email, "【验证码】z2devil个人博客",
                 "您的验证码为："+code+"，"+authProperties.getCodeExpireTime()/60+"分钟内有效。");
         return Result.res(ResponseEnum.OK);
@@ -76,8 +76,20 @@ public class AuthController {
         // 校验验证码
         String verifyCodeKey = authProperties.getCodePrefix()+userSignBO.getEmail();
         String verifyCodeValue = (String) redisUtils.get(verifyCodeKey);
-        if (verifyCodeValue == null || !verifyCodeValue.equals(userSignBO.getVerifyCode())) {
+        if (verifyCodeValue == null) {
             return Result.res(ResponseEnum.INTERNAL_SERVER_ERROR,"验证码过期或错误");
+        }else {
+            String[] verifyCodeArr = verifyCodeValue.split("-");
+            if (!verifyCodeArr[0].equals(userSignBO.getVerifyCode())) {
+                int chance = Integer.parseInt(verifyCodeArr[1])-1;
+                if (chance == 0) {
+                    redisUtils.del(verifyCodeKey);
+                    return Result.res(ResponseEnum.INTERNAL_SERVER_ERROR,"验证码失败次数过多，请重新发送验证码");
+                }else {
+                    redisUtils.set(verifyCodeKey, verifyCodeArr[0]+"-"+chance);
+                    return Result.res(ResponseEnum.INTERNAL_SERVER_ERROR,"验证码错误，您还有" + chance + "次机会");
+                }
+            }
         }
         redisUtils.del(verifyCodeKey);
         // 根据邮箱查询用户

@@ -14,7 +14,8 @@ public class CaptchaUtils {
      * @return
      */
     public static String randomStr(int length) {
-        String str1 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+//        String str1 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+        String str1 = "1234567890";
         String str2 = "";
         int len = str1.length() - 1;
         double r;
