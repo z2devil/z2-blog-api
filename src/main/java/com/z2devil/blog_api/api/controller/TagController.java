@@ -53,7 +53,7 @@ public class TagController {
     @Access(AccessLevel.ADMIN)
     @DeleteMapping("/{id}")
     public Result deleteTag(@PathVariable Integer id) {
-        tagService.removeById(id);
+        tagService.removeTag(id);
         return Result.res(ResponseEnum.OK, "删除成功");
     }
 }

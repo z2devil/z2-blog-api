@@ -35,4 +35,13 @@ public interface ITagService extends IService<Tag> {
      */
     Integer addTag(AddTagBO addTagBO);
 
+    /**
+     * 删除标签
+     * @params [id]
+     * @return Integer
+     * @author z2devil
+     * @date 2022/4/12
+     */
+    void removeTag(Integer id);
+
 }

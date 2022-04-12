@@ -60,4 +60,12 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagS
         }
     }
 
+    @Override
+    @CacheEvict(key = "'all'")
+    public void removeTag(Integer id) {
+        LambdaQueryWrapper<Tag> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Tag::getId, id);
+        tagMapper.delete(wrapper);
+    }
+
 }

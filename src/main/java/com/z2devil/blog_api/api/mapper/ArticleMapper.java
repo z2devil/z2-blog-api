@@ -47,7 +47,7 @@ public interface ArticleMapper extends BaseMapper<Article> {
                 "       AND (title LIKE CONCAT('%', #{keyword},'%') OR summary LIKE CONCAT('%', #{keyword},'%') )",
                 "   </if>",
                 "   <if test=\"tags != null\">",
-                "       AND t_id IN",
+                "       AND article_tag.is_delete = 0 AND t_id IN",
                 "       <foreach collection='tags' item='tag' open='(' separator=',' close=')'>",
                 "           #{tag}",
                 "       </foreach>",
