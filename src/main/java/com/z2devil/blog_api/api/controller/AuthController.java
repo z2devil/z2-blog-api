@@ -2,9 +2,11 @@ package com.z2devil.blog_api.api.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.z2devil.blog_api.annotation.Access;
+import com.z2devil.blog_api.annotation.Limit;
 import com.z2devil.blog_api.api.entity.User;
 import com.z2devil.blog_api.api.entity.bo.UserSignBO;
 import com.z2devil.blog_api.api.entity.dto.UserInfoDTO;
+import com.z2devil.blog_api.api.entity.enums.LimitType;
 import com.z2devil.blog_api.api.service.IUserService;
 import com.z2devil.blog_api.api.service.mapStruct.UserInfoConverter;
 import com.z2devil.blog_api.config.bean.AuthProperties;
@@ -46,6 +48,7 @@ public class AuthController {
     private final AuthProperties authProperties;
 
     @ApiOperation("获取当前用户信息")
+    @Limit(period = 10, count = 10, limitType = LimitType.IP)
     @Access(AccessLevel.LOGIN)
     @GetMapping("/info")
     public Result<UserInfoDTO> getUserInfo() {
@@ -55,6 +58,7 @@ public class AuthController {
     }
 
     @ApiOperation("向邮箱发送验证码")
+    @Limit(period = 10, count = 10, limitType = LimitType.IP)
     @GetMapping("verify-code")
     public Result sendVerifyCode(String email) throws Exception {
         String sentCodeKey = authProperties.getCodePrefix()+email;
@@ -71,6 +75,7 @@ public class AuthController {
     }
 
     @ApiOperation("登录or注册")
+    @Limit(period = 10, count = 10, limitType = LimitType.IP)
     @PostMapping("sign")
     public Result<Map> sign(@RequestBody UserSignBO userSignBO) {
         // 校验验证码

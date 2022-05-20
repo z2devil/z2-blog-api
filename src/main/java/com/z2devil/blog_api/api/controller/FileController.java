@@ -2,7 +2,9 @@ package com.z2devil.blog_api.api.controller;
 
 
 import com.z2devil.blog_api.annotation.Access;
+import com.z2devil.blog_api.annotation.Limit;
 import com.z2devil.blog_api.api.entity.bo.FileAddBO;
+import com.z2devil.blog_api.api.entity.enums.LimitType;
 import com.z2devil.blog_api.api.service.IFileService;
 import com.z2devil.blog_api.response.Result;
 import com.z2devil.blog_api.response.enums.ResponseEnum;
@@ -34,6 +36,7 @@ public class FileController {
     private final IFileService fileService;
 
     @ApiOperation(value = "上传预请求")
+    @Limit(period = 10, count = 10, limitType = LimitType.IP)
     @Access(AccessLevel.ADMIN)
     @PostMapping("/pre")
     public Result<Map<String, String>> pre() {
@@ -50,6 +53,7 @@ public class FileController {
 
     @SneakyThrows
     @ApiOperation(value = "新增")
+    @Limit(period = 10, count = 10, limitType = LimitType.IP)
     @Access(AccessLevel.ADMIN)
     @PostMapping
     public Result<Integer> add(@RequestBody FileAddBO fileAddBO) {

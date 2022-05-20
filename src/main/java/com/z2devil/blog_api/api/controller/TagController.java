@@ -2,7 +2,9 @@ package com.z2devil.blog_api.api.controller;
 
 
 import com.z2devil.blog_api.annotation.Access;
+import com.z2devil.blog_api.annotation.Limit;
 import com.z2devil.blog_api.api.entity.bo.AddTagBO;
+import com.z2devil.blog_api.api.entity.enums.LimitType;
 import com.z2devil.blog_api.api.entity.vo.TagVO;
 import com.z2devil.blog_api.api.service.ITagService;
 import com.z2devil.blog_api.api.service.mapStruct.AddTagConverter;
@@ -37,12 +39,14 @@ public class TagController {
     private final AddTagConverter addTagConverter;
 
     @ApiOperation(value = "获取标签列表")
+    @Limit(period = 10, count = 10, limitType = LimitType.IP)
     @GetMapping
     public Result<List<TagVO>> getTagList() {
         return Result.res(ResponseEnum.OK, tagService.getTags());
     }
 
     @ApiOperation(value="新增标签")
+    @Limit(period = 10, count = 10, limitType = LimitType.IP)
     @Access(AccessLevel.ADMIN)
     @PostMapping
     public Result addTag(@RequestBody AddTagBO addTagBO) {
@@ -50,6 +54,7 @@ public class TagController {
     }
 
     @ApiOperation(value="删除标签")
+    @Limit(period = 10, count = 10, limitType = LimitType.IP)
     @Access(AccessLevel.ADMIN)
     @DeleteMapping("/{id}")
     public Result deleteTag(@PathVariable Integer id) {

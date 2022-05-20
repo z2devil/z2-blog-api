@@ -1,5 +1,7 @@
 package com.z2devil.blog_api.config;
 
+import com.z2devil.blog_api.config.bean.CorsProperties;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -13,13 +15,17 @@ import org.springframework.web.filter.CorsFilter;
  * Date: 2020/7/9 18:14
  **/
 @Configuration
+@RequiredArgsConstructor
 public class GlobalCorsConfig {
+
+    private final CorsProperties corsProperties;
+
     @Bean
     public CorsFilter corsFilter() {
         //1.添加CORS配置信息
         CorsConfiguration config = new CorsConfiguration();
         //1) *默认所有ip和端口都可以访问，也可以设置固定
-        config.addAllowedOrigin("https://z2devil.cn/*");
+        config.addAllowedOrigin(corsProperties.getOrigin());
         //2) 是否发送Cookie信息
         config.setAllowCredentials(false);
         //3) 允许的请求方式

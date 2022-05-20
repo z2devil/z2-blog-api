@@ -117,3 +117,7 @@ swagger:
   description: 中二Devil的个人博客接口文档
   title: BLOG 接口文档
   version: @project.version@
+
+# 跨域
+cors:
+  origin: "*"

@@ -2,7 +2,9 @@ package com.z2devil.blog_api.api.controller;
 
 
 import com.z2devil.blog_api.annotation.Access;
+import com.z2devil.blog_api.annotation.Limit;
 import com.z2devil.blog_api.api.entity.bo.AddPreferBO;
+import com.z2devil.blog_api.api.entity.enums.LimitType;
 import com.z2devil.blog_api.api.service.IPreferService;
 import com.z2devil.blog_api.response.Result;
 import com.z2devil.blog_api.response.enums.ResponseEnum;
@@ -31,6 +33,7 @@ public class PreferController {
     private final IPreferService preferService;
 
     @ApiOperation(value="喜欢")
+    @Limit(period = 10, count = 10, limitType = LimitType.IP)
     @Access(AccessLevel.LOGIN)
     @PostMapping
     public Result<Integer> like(@RequestBody AddPreferBO addPreferBO) {

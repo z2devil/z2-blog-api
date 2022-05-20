@@ -1,6 +1,8 @@
 package com.z2devil.blog_api.utils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * @program: blog
@@ -10,30 +12,41 @@ import javax.servlet.http.HttpServletRequest;
  **/
 public class IPUtil {
 
+    private static final String UNKNOWN = "unknown";
+
     /**
-     * 获取登录用户的IP地址
-     *
-     * @param request
-     * @return
+     * 获取ip地址
      */
-    public static String getIpAddr(HttpServletRequest request) {
-        String ip = request.getHeader("x-forwarded-for");
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Proxy-Client-IP");
+    public static String getIp(HttpServletRequest request) {
+        try {
+            String ip = request.getHeader("x-forwarded-for");
+            if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+                ip = request.getHeader("Proxy-Client-IP");
+            }
+            if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+                ip = request.getHeader("WL-Proxy-Client-IP");
+            }
+            if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+                ip = request.getRemoteAddr();
+            }
+            String comma = ",";
+            String localhost = "127.0.0.1";
+            if (ip.contains(comma)) {
+                ip = ip.split(",")[0];
+            }
+            if (localhost.equals(ip)) {
+                // 获取本机真正的ip地址
+                try {
+                    ip = InetAddress.getLocalHost().getHostAddress();
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                }
+            }
+            return ip;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "ip暂时不能获取";
         }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getRemoteAddr();
-        }
-        if ("0:0:0:0:0:0:0:1".equals(ip)) {
-            ip = "127.0.0.1";
-        }
-        if (ip.split(",").length > 1) {
-            ip = ip.split(",")[0];
-        }
-        return ip;
     }
 
 }
