@@ -120,4 +120,4 @@ swagger:
 
 # 跨域
 cors:
-  origin: "https://z2devil.cn*"
+  origin: "https://z2devil.cn"
