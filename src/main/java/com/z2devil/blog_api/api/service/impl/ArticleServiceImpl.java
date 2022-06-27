@@ -24,11 +24,17 @@ import com.z2devil.blog_api.exception.BaseException;
 import com.z2devil.blog_api.utils.SignUserIdUtils;
 import com.z2devil.blog_api.utils.enums.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedOutputStream;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -133,9 +139,45 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
                 throw new AccessException("权限异常");
             }
             removeById(id);
-        }else {
+        } else {
             throw new BaseException("删除失败");
         }
     }
 
+    @SneakyThrows
+    @Override
+    public void exportArticle(Integer id, HttpServletResponse response) {
+        ArticleDetailVO result = articleMapper.getArticleDetail(id);
+        response.setCharacterEncoding("utf-8");
+        response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
+        //设置响应的内容类型
+        response.setHeader("Content-Type", "application/octet-stream");
+        //设置文件的名称和格式
+        response.addHeader("Content-Disposition", "attachment;filename="
+                // 设置名称格式，没有这个中文名称无法显示
+                + URLEncoder.encode(result.getTitle(), "utf-8")
+                + ".md");
+        BufferedOutputStream buff = null;
+        ServletOutputStream outStr = null;
+        try {
+            outStr = response.getOutputStream();
+            buff = new BufferedOutputStream(outStr);
+            buff.write(result.getContent().getBytes(StandardCharsets.UTF_8));
+            buff.flush();
+            buff.close();
+        } catch (Exception e) {
+            log.error("导出文件文件出错: " + e);
+        } finally {
+            try {
+                if (buff != null) {
+                    buff.close();
+                }
+                if (outStr != null) {
+                    outStr.close();
+                }
+            } catch (Exception e) {
+                log.error("关闭流对象出错: " + e);
+            }
+        }
+    }
 }

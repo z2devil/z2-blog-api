@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 /**
@@ -46,7 +47,7 @@ public class ArticleController {
             @RequestParam(name = "keyword", required = false) String keyword,
             @RequestParam(name = "tags[]", required = false) Integer[] tags,
             PageBO pageBO
-        ) {
+    ) {
         return Result.res(ResponseEnum.OK, articleService.getArticles(keyword, tags, pageBO));
     }
 
@@ -64,7 +65,7 @@ public class ArticleController {
         return Result.res(ResponseEnum.OK, articleService.getArticleDetail(id));
     }
 
-    @ApiOperation(value="发表文章")
+    @ApiOperation(value = "发表文章")
     @Limit(period = 10, count = 10, limitType = LimitType.IP)
     @Access(AccessLevel.ADMIN)
     @PostMapping
@@ -73,7 +74,7 @@ public class ArticleController {
         return Result.res(ResponseEnum.OK, "发表成功");
     }
 
-    @ApiOperation(value="修改文章")
+    @ApiOperation(value = "修改文章")
     @Limit(period = 10, count = 10, limitType = LimitType.IP)
     @Access(AccessLevel.ADMIN)
     @PutMapping
@@ -82,7 +83,7 @@ public class ArticleController {
         return Result.res(ResponseEnum.OK, "修改成功");
     }
 
-    @ApiOperation(value="删除文章")
+    @ApiOperation(value = "删除文章")
     @Limit(period = 10, count = 10, limitType = LimitType.IP)
     @Access(AccessLevel.ADMIN)
     @DeleteMapping("/{id}")
@@ -91,4 +92,11 @@ public class ArticleController {
         return Result.res(ResponseEnum.OK, "删除成功");
     }
 
+    @ApiOperation(value = "导出文章")
+    @Limit(period = 10, count = 10, limitType = LimitType.IP)
+    @Access(AccessLevel.ADMIN)
+    @PostMapping("/export/{id}")
+    public void exportArticle(@PathVariable Integer id, HttpServletResponse response) {
+        articleService.exportArticle(id, response);
+    }
 }
