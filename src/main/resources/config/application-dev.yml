@@ -77,7 +77,7 @@ spring:
     # 你的qq邮箱
     username: 631471750@qq.com
     # 注意这里不是邮箱密码，而是SMTP授权密码
-    password: idsnjxnnygqbbcae
+    password: flnopcldcliwbfag
 
 #认证签权
 auth:
