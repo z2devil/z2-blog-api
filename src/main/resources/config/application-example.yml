@@ -7,9 +7,9 @@ spring:
     druid:
       db-type: com.alibaba.druid.pool.DruidDataSource
       driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-      url: jdbc:log4jdbc:mysql://43.142.148.166:3306/blogSql?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
-      username: root
-      password: YFF100N321m
+      url: jdbc:log4jdbc:mysql:// :3306/blogSql?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
+      username:
+      password:
       # 初始连接数
       initial-size: 5
       # 最小连接数
@@ -49,9 +49,9 @@ spring:
   redis:
     #数据库索引
     database: 1
-    host: 43.142.148.166
+    host:
     port: 6379
-    password: YFF100N321m
+    password:
     #连接超时时间（ms）
     timeout: 5000
     jedis:
@@ -75,16 +75,16 @@ spring:
     # 邮箱stmp
     host: smtp.qq.com
     # 你的qq邮箱
-    username: 631471750@qq.com
+    username:
     # 注意这里不是邮箱密码，而是SMTP授权密码
-    password: flnopcldcliwbfag
+    password:
 
 #认证签权
 auth:
   # 请求头名称
   header: Authorization
   # 秘钥
-  secret: JKKLJOoasdlfj
+  secret:
   # 验证码前缀 在redis中存储数据的key前缀，例：code-631471750@qq.com
   code-prefix: code-
   # token前缀 在redis中存储数据的key前缀，例：token-1
@@ -104,11 +104,11 @@ auth:
 
 #对象存储
 oss:
-  endpoint: oss-cn-beijing.aliyuncs.com
-  access-key-id: LTAI5tSfHizt7iAEjigoefXg
-  access-key-secret: juUuKvxggQizaoQV6aZUENneObuwuu
-  bucket-name: z2devil-bucket
-  root-path: blog/
+  endpoint:
+  access-key-id:
+  access-key-secret:
+  bucket-name:
+  root-path:
 
 #是否开启 swagger-ui
 swagger:

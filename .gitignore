@@ -34,5 +34,5 @@ build/
 .vscode/
 
 ### 配置文件 ###
-/config/application-dev.yml
-/config/application-prod.yml
+**/**/config/application-dev.yml
+**/**/config/application-prod.yml
