@@ -35,4 +35,4 @@ build/
 
 ### 配置文件 ###
 /config/application-dev.yml
-/config/application-example.yml
+/config/application-prod.yml
