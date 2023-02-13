@@ -34,4 +34,5 @@ build/
 .vscode/
 
 ### 配置文件 ###
-/config/application-!(example).yml
+/config/application-dev.yml
+/config/application-example.yml
