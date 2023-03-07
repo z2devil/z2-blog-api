@@ -25,7 +25,10 @@ public class GlobalCorsConfig {
         //1.添加CORS配置信息
         CorsConfiguration config = new CorsConfiguration();
         //1) *默认所有ip和端口都可以访问，也可以设置固定
-        config.addAllowedOrigin(corsProperties.getOrigin());
+        String[] origins = corsProperties.getOrigin();
+        for (int i = 0; i < origins.length; i++) {
+            config.addAllowedOrigin(origins[i]);
+        }
         //2) 是否发送Cookie信息
         config.setAllowCredentials(false);
         //3) 允许的请求方式
